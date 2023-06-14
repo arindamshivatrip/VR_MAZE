@@ -29,30 +29,26 @@ public class flap : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    
+
     // Update is called once per frame
     void Update()
     {
-        // if isFlapping = true
-            // if diff +ve && totalDiff > threshold
-                // move forward
-                // isFlapping = false
-                // totalDiff = 0
-            // else if diff -ve
-                // totalDiff += diff
-        // else if diff -ve
-                // isFlapping = true
-                // totalDiff += diff
 
         lDiff = leftController.transform.localPosition.y - lastLeftPosition.y;
         rDiff = rightController.transform.localPosition.y - lastRightPosition.y;
 
 
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 20);
+
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 120);
         if (isFlappingL && isFlappingR)
         {
             if (lDiff > 0 && rDiff > 0 && Mathf.Abs(totalLDiff) > threshold && Mathf.Abs(totalRDiff) > threshold)
             {
-                rb.velocity = cam.transform.forward * 20;
+                Vector3 line = (leftController.transform.position - rightController.transform.position).normalized;
+                Vector3 force = new Vector3(-1 * line.z, 0, line.x);
+      
+                rb.AddForce(force * -400);
                 isFlappingL = false;
                 isFlappingR = false;
                 totalLDiff = 0;
