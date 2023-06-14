@@ -11,6 +11,7 @@ public class flap : MonoBehaviour
     Vector3 lastLeftPosition;
     public GameObject rightController;
     Vector3 lastRightPosition;
+    public GameObject cam;
 
     float totalLDiff;
     float lDiff;
@@ -45,11 +46,13 @@ public class flap : MonoBehaviour
         lDiff = leftController.transform.localPosition.y - lastLeftPosition.y;
         rDiff = rightController.transform.localPosition.y - lastRightPosition.y;
 
+
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 20);
         if (isFlappingL && isFlappingR)
         {
             if (lDiff > 0 && rDiff > 0 && Mathf.Abs(totalLDiff) > threshold && Mathf.Abs(totalRDiff) > threshold)
             {
-                rb.AddForce(transform.forward * 100);
+                rb.velocity = cam.transform.forward * 20;
                 isFlappingL = false;
                 isFlappingR = false;
                 totalLDiff = 0;
