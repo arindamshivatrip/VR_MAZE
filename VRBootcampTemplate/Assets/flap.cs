@@ -12,16 +12,20 @@ public class flap : MonoBehaviour
     public GameObject rightController;
     Vector3 lastRightPosition;
 
-    float totalDiff;
+    float totalLDiff;
+    float lDiff;
+    float totalRDiff;
+    float rDiff;
 
 
-    bool isFlapping;
-    float threshold;
+    bool isFlappingL;
+    bool isFlappingR;
+    const float threshold = 0.04f;
 
     float timeElapsed;
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -34,21 +38,47 @@ public class flap : MonoBehaviour
                 // totalDiff = 0
             // else if diff -ve
                 // totalDiff += diff
-        // else isFlapping = false
-            // if diff -ve
+        // else if diff -ve
                 // isFlapping = true
                 // totalDiff += diff
 
-        float diff = leftController.transform.localPosition.y - lastLeftPosition.y;
-        
-        if(isFlapping)
-        {
-            if(diff > 0 && totalDiff > threshold)
-            {
+        lDiff = leftController.transform.localPosition.y - lastLeftPosition.y;
+        rDiff = rightController.transform.localPosition.y - lastRightPosition.y;
 
+        if (isFlappingL && isFlappingR)
+        {
+            if (lDiff > 0 && rDiff > 0 && Mathf.Abs(totalLDiff) > threshold && Mathf.Abs(totalRDiff) > threshold)
+            {
+                rb.AddForce(transform.forward * 100);
+                isFlappingL = false;
+                isFlappingR = false;
+                totalLDiff = 0;
+                totalRDiff = 0;
+            }
+            else if (lDiff < 0 && rDiff < 0)
+            {
+                totalLDiff += lDiff;
+                totalRDiff += rDiff;
             }
         }
+        else if (lDiff < 0)
+            {
+                isFlappingL = true;
+            isFlappingR = true;
+            totalLDiff += lDiff;
+            totalRDiff += rDiff;
+        }
+
 
         lastLeftPosition = leftController.transform.localPosition;
+        lastRightPosition = rightController.transform.localPosition;
+
+
+    }
+
+    private void OnGUI()
+    {
+        GUILayout.Button(lDiff.ToString());
+        GUILayout.Button(totalLDiff.ToString());
     }
 }
