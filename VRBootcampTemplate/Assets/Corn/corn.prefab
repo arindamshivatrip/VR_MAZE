@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 7637182496536608985}
   - component: {fileID: 3523313733080145811}
   - component: {fileID: 33376652727745343}
+  - component: {fileID: 7726625086833542143}
   m_Layer: 0
   m_Name: corn
   m_TagString: Untagged
@@ -228,6 +229,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &7726625086833542143
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7113270310024321635}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7eff125a0e529894589238e35ef9f801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7367150130674329985
 GameObject:
   m_ObjectHideFlags: 0

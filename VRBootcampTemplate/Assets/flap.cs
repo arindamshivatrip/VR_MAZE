@@ -67,8 +67,8 @@ public class flap : MonoBehaviour
             {
                 Vector3 line = (leftController.transform.position - rightController.transform.position);
                 Vector3 force = new Vector3(-line.z, 0, line.x).normalized;
-      
-                rb.AddForce(force * -1000);
+     
+                rb.AddForce(force * -2000);
                 isFlappingL = false;
                 isFlappingR = false;
                 totalLDiff = 0;

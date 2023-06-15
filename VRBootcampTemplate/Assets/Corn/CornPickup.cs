@@ -20,10 +20,11 @@ public class CornPickup : MonoBehaviour
     }
     private void OnTriggerEnter(UnityEngine.Collider other)
     {
-        stats.cornsCollected++;
-        audioData.Play();
-        PXR_Input.SendHapticImpulse(PXR_Input.VibrateType.BothController,
-            vibrationIntensity, vibrationDuration);
-        Destroy(other.gameObject);
+        if (!other.CompareTag("corn")) return;
+            stats.cornsCollected++;
+            audioData.Play();
+            PXR_Input.SendHapticImpulse(PXR_Input.VibrateType.BothController,
+                vibrationIntensity, vibrationDuration);
+            Destroy(other.gameObject);
     }
 }
