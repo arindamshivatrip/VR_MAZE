@@ -16,7 +16,7 @@ public class CornPickup : MonoBehaviour
     private void OnTriggerEnter(UnityEngine.Collider other)
     {
         stats.cornsCollected++;
-        audioData.Play(0);
-        Destroy(gameObject);
+        audioData.Play();
+        Destroy(other.gameObject);
     }
 }
