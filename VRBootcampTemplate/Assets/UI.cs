@@ -16,6 +16,6 @@ public class UI : MonoBehaviour
     void Update()
     {
         
-        scoreText.text = "Corns collected: " + stats.cornsCollected.ToString();
+        scoreText.text = "Corns collected: " + stats.cornsCollected.ToString() + "/10";
     }
 }
