@@ -24,7 +24,7 @@ public class flap : MonoBehaviour
 
     private List<UnityEngine.XR.InputDevice> controllers;
     const float groundHeight = 0.0f;
-    const float hoverHeight = 0.5f;
+    const float hoverHeight = 2f;
 
     void Start()
     {
