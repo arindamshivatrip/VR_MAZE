@@ -68,7 +68,7 @@ public class flap : MonoBehaviour
                 Vector3 line = (leftController.transform.position - rightController.transform.position).normalized;
                 Vector3 force = new Vector3(-line.z, 0, line.x);
       
-                rb.AddForce(force * -400);
+                rb.AddForce(force * -4000);
                 isFlappingL = false;
                 isFlappingR = false;
                 totalLDiff = 0;
@@ -92,9 +92,4 @@ public class flap : MonoBehaviour
         lastRightPosition = rightController.transform.localPosition;
     }
 
-    private void OnGUI()
-    {
-        GUILayout.Button(lDiff.ToString());
-        GUILayout.Button(totalLDiff.ToString());
-    }
 }
