@@ -13,7 +13,7 @@ public class CornPickup : MonoBehaviour
     {
         audioData = GetComponent<AudioSource>();
     }
-    private void OnCollisionEnter(UnityEngine.Collision collision)
+    private void OnTriggerEnter(UnityEngine.Collider other)
     {
         stats.cornsCollected++;
         audioData.Play(0);
