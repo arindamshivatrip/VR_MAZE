@@ -6,7 +6,7 @@ public class Finish : MonoBehaviour
 {
     AudioSource audioData;
     public UnityEngine.UI.Text timer;
-    float timeElapsed = 0f;
+    public PlayerStats stats;
     bool won = false;
     public int vibrationDuration = 10000;
     public float vibrationIntensity = 1.0f;
@@ -16,11 +16,11 @@ public class Finish : MonoBehaviour
     }
     private void Update()
     {
-        timer.text = "You took " + timeElapsed.ToString() + " seconds!";
+        timer.text = "You took " + stats.timeElapsed.ToString() + " seconds!";
         if(!won)
         {
 
-            timeElapsed += Time.deltaTime;
+            stats.timeElapsed += Time.deltaTime;
         }
     }
     private void OnTriggerEnter(Collider other)
