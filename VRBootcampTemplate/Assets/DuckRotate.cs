@@ -11,5 +11,6 @@ public class DuckRotate : MonoBehaviour
     void Update()
     {
         transform.rotation = cam.transform.rotation;
+        transform.Rotate(0, 180, 0);
     }
 }

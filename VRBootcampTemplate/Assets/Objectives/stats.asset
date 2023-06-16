@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: stats
   m_EditorClassIdentifier: 
   cornsCollected: 0
+  timeElapsed: 0
