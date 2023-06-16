@@ -6,12 +6,11 @@ using UnityEngine.InputSystem;
 public class flap : MonoBehaviour
 {
     Rigidbody rb;
-
+    public GameObject cam;
     public GameObject leftController;
     Vector3 lastLeftPosition;
     public GameObject rightController;
     Vector3 lastRightPosition;
-    public GameObject cam;
 
     float totalLDiff;
     float lDiff;
@@ -22,53 +21,30 @@ public class flap : MonoBehaviour
     bool isFlappingR;
     const float threshold = 0.04f;
 
-    private List<UnityEngine.XR.InputDevice> controllers;
-    const float groundHeight = 0.0f;
-    const float hoverHeight = 2f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        controllers = new List<UnityEngine.XR.InputDevice>();
-        controllers.Add(UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.LeftHand));
-        controllers.Add(UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.RightHand));
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (var controller in controllers)
-        {
-            if (controller.isValid && controller.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool isPressed))
-            {
-                if (!isPressed)
-                {
-                    transform.position = new Vector3(transform.position.x, groundHeight, transform.position.z);
-                    isFlappingL = false;
-                    isFlappingR = false;
-                    totalLDiff = 0;
-                    totalRDiff = 0;
-                    return;
-                }
-                else
-                {
-                    transform.position = new Vector3(transform.position.x, hoverHeight, transform.position.z);
-                }
-            }
-        }
+        isFlappingL = true;
+        isFlappingR = true;
+        totalLDiff = 0;
+        totalRDiff = 0;
 
         lDiff = leftController.transform.localPosition.y - lastLeftPosition.y;
         rDiff = rightController.transform.localPosition.y - lastRightPosition.y;
 
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 120);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 30);
         if (isFlappingL && isFlappingR)
         {
-            if (lDiff > 0 && rDiff > 0 && Mathf.Abs(totalLDiff) > threshold && Mathf.Abs(totalRDiff) > threshold)
+            Debug.Log(lDiff + " " + rDiff);
+            if (lDiff > 0 && rDiff > 0)
             {
-                Vector3 line = (leftController.transform.position - rightController.transform.position);
-                Vector3 force = new Vector3(-line.z, 0, line.x).normalized;
-     
-                rb.AddForce(force * -2000);
+                rb.AddForce(cam.transform.forward * 500);
                 isFlappingL = false;
                 isFlappingR = false;
                 totalLDiff = 0;
