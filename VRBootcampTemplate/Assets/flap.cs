@@ -53,7 +53,7 @@ public class flap : MonoBehaviour
         lDiff = leftController.transform.localPosition.y - lastLeftPosition.y;
         rDiff = rightController.transform.localPosition.y - lastRightPosition.y;
 
-        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 60);
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 45);
         if (isFlappingL && isFlappingR)
         {
             if (lDiff > 0 && rDiff > 0 && Mathf.Abs(totalLDiff) > threshold && Mathf.Abs(totalRDiff) > threshold)
