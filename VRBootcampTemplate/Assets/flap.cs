@@ -11,44 +11,85 @@ public class flap : MonoBehaviour
     Vector3 lastLeftPosition;
     public GameObject rightController;
     Vector3 lastRightPosition;
+    public GameObject cam;
 
-    float totalDiff;
+    float totalLDiff;
+    float lDiff;
+    float totalRDiff;
+    float rDiff;
 
+    bool isFlappingL;
+    bool isFlappingR;
+    const float threshold = 0.04f;
 
-    bool isFlapping;
-    float threshold;
+    private List<UnityEngine.XR.InputDevice> controllers;
+    const float groundHeight = 0.0f;
+    const float hoverHeight = 2f;
 
-    float timeElapsed;
     void Start()
     {
-        
+        rb = GetComponent<Rigidbody>();
+        controllers = new List<UnityEngine.XR.InputDevice>();
+        controllers.Add(UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.LeftHand));
+        controllers.Add(UnityEngine.XR.InputDevices.GetDeviceAtXRNode(UnityEngine.XR.XRNode.RightHand));
     }
 
     // Update is called once per frame
     void Update()
     {
-        // if isFlapping = true
-            // if diff +ve && totalDiff > threshold
-                // move forward
-                // isFlapping = false
-                // totalDiff = 0
-            // else if diff -ve
-                // totalDiff += diff
-        // else isFlapping = false
-            // if diff -ve
-                // isFlapping = true
-                // totalDiff += diff
-
-        float diff = leftController.transform.localPosition.y - lastLeftPosition.y;
-        
-        if(isFlapping)
+        foreach (var controller in controllers)
         {
-            if(diff > 0 && totalDiff > threshold)
+            if (controller.isValid && controller.TryGetFeatureValue(UnityEngine.XR.CommonUsages.triggerButton, out bool isPressed))
             {
-
+                if (!isPressed)
+                {
+                    transform.position = new Vector3(transform.position.x, groundHeight, transform.position.z);
+                    isFlappingL = false;
+                    isFlappingR = false;
+                    totalLDiff = 0;
+                    totalRDiff = 0;
+                    return;
+                }
+                else
+                {
+                    transform.position = new Vector3(transform.position.x, hoverHeight, transform.position.z);
+                }
             }
         }
 
+        lDiff = leftController.transform.localPosition.y - lastLeftPosition.y;
+        rDiff = rightController.transform.localPosition.y - lastRightPosition.y;
+
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, 120);
+        if (isFlappingL && isFlappingR)
+        {
+            if (lDiff > 0 && rDiff > 0 && Mathf.Abs(totalLDiff) > threshold && Mathf.Abs(totalRDiff) > threshold)
+            {
+                Vector3 line = (leftController.transform.position - rightController.transform.position);
+                Vector3 force = new Vector3(-line.z, 0, line.x).normalized;
+     
+                rb.AddForce(force * -2000);
+                isFlappingL = false;
+                isFlappingR = false;
+                totalLDiff = 0;
+                totalRDiff = 0;
+            }
+            else if (lDiff < 0 && rDiff < 0)
+            {
+                totalLDiff += lDiff;
+                totalRDiff += rDiff;
+            }
+        }
+        else if (lDiff < 0)
+            {
+                isFlappingL = true;
+            isFlappingR = true;
+            totalLDiff += lDiff;
+            totalRDiff += rDiff;
+        }
+
         lastLeftPosition = leftController.transform.localPosition;
+        lastRightPosition = rightController.transform.localPosition;
     }
+
 }
